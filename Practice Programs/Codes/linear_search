@@ -1,0 +1,20 @@
+#include<stdio.h>
+int main()
+{
+    int num1;
+    int dataset[10];
+    for(int i = 0; i < 10; i++){
+        printf("Enter number %d for dataset : ", i+1);
+        scanf("%d", &dataset[i]);
+    }
+    printf("Enter num1 : ");
+    scanf("%d",&num1);
+    for(int j = 0; j < 10; j++){
+        if(num1 == dataset[j]){
+            printf("Found at %d.",j+1);
+            return 0;
+        }
+    }
+    printf("The number entered is not in the dataset given.");
+    return 0;
+}
