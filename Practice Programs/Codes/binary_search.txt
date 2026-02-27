@@ -1,0 +1,32 @@
+#include<stdio.h>
+int main()
+{
+    int num1;
+    int low;
+    int high;
+    int middle;
+    int dataset[10];
+    for(int i = 0; i < 10; i++){
+        printf("Enter number %d for dataset : ", i+1);
+        scanf("%d", &dataset[i]);
+    }
+    printf("Enter num1 : ");
+    scanf("%d",&num1);
+    low = 0;
+    high = 9;
+    while(low <= high){
+        middle = (low+high)/2;
+        if(num1 == dataset[middle]){
+            printf("Found at %d.",middle+1);
+            return 0;
+        }
+        else if(num1 < dataset[middle]){
+            high = middle;
+        }
+        else if(num1 > dataset[middle]){
+            low = middle;
+        }
+    }
+    printf("The number was not found.");
+    return 0;
+}

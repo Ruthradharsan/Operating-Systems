@@ -1,0 +1,24 @@
+#include<stdio.h>
+int main()
+{
+    int n;
+    int smallest;
+    int array1[10];
+    printf("Enter size of array : ");
+    scanf("%d",&n);
+    for(int i = 0; i < n; i++){
+        printf("Enter the %d element of the array : ", i+1);
+        scanf("%d",&array1[i]);
+    }
+    smallest = array1[0];
+    for(int j = 0; j < n-1; j++){
+        if(array1[j] > array1[j+1]){
+                smallest = array1[j+1];
+        }
+        else{
+            continue;
+        }
+    }
+    printf("Smallest number : %d",smallest);
+    return 0;
+}
