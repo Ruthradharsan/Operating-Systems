@@ -14,7 +14,7 @@ int main() {
     int completed = 0;
     int current_time = 0;
     while(completed < n) {
-        int min_bt = 9999;
+        int min_bt = 10000;
         int index = -1;
         for(int i = 0; i < n; i++) {
             if(at[i] <= current_time && finished[i] == 0) {
