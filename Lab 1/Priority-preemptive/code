@@ -1,0 +1,45 @@
+#include <stdio.h>
+int main(){
+    int n;
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    int pid[n], AT[n], BT[n], priority[n];
+    int RT[n], CT[n], TAT[n], WT[n];
+    for(int i = 0; i < n; i++){
+        printf("\nProcess %d\n", i+1);
+        printf("Process ID: ");
+        scanf("%d", &pid[i]);
+        printf("Arrival Time: ");
+        scanf("%d", &AT[i]);
+        printf("Burst Time: ");
+        scanf("%d", &BT[i]);
+        printf("Priority: ");
+        scanf("%d", &priority[i]);
+        RT[i] = BT[i];}
+    int current_time = 0;
+    int completed = 0;
+    while(completed < n)
+    {
+        int highest = 9999;
+        int selected_process = -1;
+        for(int i = 0; i < n; i++){
+            if(AT[i] <= current_time && RT[i] > 0){
+                if(priority[i] < highest){
+                    highest = priority[i];
+                    selected_process = i;}}}
+        if(selected_process == -1){
+            current_time++;}
+        else{
+            RT[selected_process]--;
+            current_time++;
+            if(RT[selected_process] == 0){
+                CT[selected_process] = current_time;
+                TAT[selected_process] = CT[selected_process] - AT[selected_process];
+                WT[selected_process] = TAT[selected_process] - BT[selected_process];
+                completed++;}}}
+    printf("\nPID\tAT\tBT\tPR\tTAT\tWT\n");
+    for(int i = 0; i < n; i++){
+        printf("%d\t%d\t%d\t%d\t%d\t%d\n",
+        pid[i], AT[i], BT[i], priority[i], TAT[i], WT[i]);}
+    return 0;
+}
