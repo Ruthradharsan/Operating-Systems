@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<stdbool.h>
+int main()
+{
+    int n;
+    printf("Enter number of processes : ");
+    scanf("%d",&n);
+    int pid[n];
+    int AT[n];
+    int BT[n];
+    int CT[n];
+    int TAT[n];
+    int WT[n];
+    bool completed[n];
+    int priority[n];
+    for(int i = 0; i < n; i++){
+        printf("Process number : ");
+        scanf("%d",&pid[i]);
+        printf("Arrival Time : ");
+        scanf("%d",&AT[i]);
+        printf("Burst time : ");
+        scanf("%d",&BT[i]);
+        printf("Priority number : ");
+        scanf("%d",&priority[i]);
+        completed[i] = false;
+    }
+    int current_time = 0;
+    int completed_count = 0;
+    while(completed_count < n){
+        int highest = 100000;
+        int selected_process = -1;
+        for(int i = 0; i < n; i++){
+            if(AT[i] <= current_time && completed[i] == false){
+                if(priority[i] < highest){
+                    highest = priority[i];
+                    selected_process = i;
+                }
+            }
+        }
+        if(selected_process == -1){
+            current_time = current_time + 1;
+        }
+        else{
+            int start_time = current_time;
+            CT[selected_process] = start_time + BT[selected_process];
+            TAT[selected_process] = CT[selected_process] - AT[selected_process];
+            WT[selected_process] = TAT[selected_process] - BT[selected_process];
+            current_time = CT[selected_process];
+            completed[selected_process] = true;
+            completed_count = completed_count + 1;
+        }
+    }
+    printf("Process ID \t AT \t BT \t Priority \t TAT \t WT \n");
+    for(int i = 0; i < n; i++){
+        printf("      %d   \t %d \t %d \t    %d    \t  %d \t %d \n",pid[i], AT[i], BT[i],priority[i],TAT[i],WT[i]);
+    }
+    return 0;
+}
