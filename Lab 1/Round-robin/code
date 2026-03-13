@@ -1,0 +1,45 @@
+#include<stdio.h>
+int main(){
+    int n,tq;
+    printf("Enter number of processes: ");
+    scanf("%d",&n);
+    printf("Enter time quantum: ");
+    scanf("%d",&tq);
+    int pid[n],AT[n],BT[n],RT[n],WT[n],TAT[n],queue[100],front=0,rear=0;
+    int visited[n];
+    for(int i=0;i<n;i++){
+        printf("\nProcess %d\n",i+1);
+        printf("Process ID: ");scanf("%d",&pid[i]);
+        printf("Arrival Time: ");scanf("%d",&AT[i]);
+        printf("Burst Time: ");scanf("%d",&BT[i]);
+        RT[i]=BT[i];visited[i]=0;}
+    int current_time=0,completed=0;
+    while(completed<n){
+        for(int i=0;i<n;i++){
+            if(AT[i]<=current_time&&visited[i]==0){
+                queue[rear++]=i;visited[i]=1;}}
+        if(front==rear){
+            current_time++;continue;}
+        int p=queue[front++];
+        if(RT[p]>tq){
+            RT[p]-=tq;
+            current_time+=tq;
+            for(int i=0;i<n;i++){
+                if(AT[i]<=current_time&&visited[i]==0){
+                    queue[rear++]=i;visited[i]=1;}}
+            queue[rear++]=p;}
+        else{
+            current_time+=RT[p];
+            TAT[p]=current_time-AT[p];
+            WT[p]=TAT[p]-BT[p];
+            RT[p]=0;
+            completed++;}}
+    printf("\nPID\tAT\tBT\tWT\tTAT\n");
+    float awt=0,atat=0;
+    for(int i=0;i<n;i++){
+        printf("%d\t%d\t%d\t%d\t%d\n",pid[i],AT[i],BT[i],WT[i],TAT[i]);
+        awt+=WT[i];atat+=TAT[i];}
+    printf("Average WT=%.2f\n",awt/n);
+    printf("Average TAT=%.2f\n",atat/n);
+    return 0;
+}
