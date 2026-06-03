@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <semaphore.h>
+
+#define BUFFER_SIZE 5
+
+int buffer[BUFFER_SIZE];
+int top = -1;   
+int item = 0;
+
+sem_t empty, full, mutex;
+
+
+void produce() {
+    sem_wait(&empty);
+    sem_wait(&mutex);
+
+    item++;
+    top++;
+    buffer[top] = item;
+
+    printf("Producer has produced: Item %d\n", item);
+
+    sem_post(&mutex);
+    sem_post(&full);
+}
+
+void consume() {
+    sem_wait(&full);
+    sem_wait(&mutex);
+
+    int consumed = buffer[top];
+    printf("Consumer has consumed: Item %d\n", consumed);
+
+    top--;
+
+    sem_post(&mutex);
+    sem_post(&empty);
+}
+
+int main() {
+    int choice;
+
+    sem_init(&empty, 0, BUFFER_SIZE);
+    sem_init(&full, 0, 0);
+    sem_init(&mutex, 0, 1);
+
+    while (1) {
+        printf("\nEnter 1. Producer 2. Consumer 3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                if (top == BUFFER_SIZE - 1) {
+                    printf("Buffer is full!\n");
+                } else {
+                    produce();
+                }
+                break;
+
+            case 2:
+                if (top == -1) {
+                    printf("Buffer is empty!\n");
+                } else {
+                    consume();
+                }
+                break;
+
+            case 3:
+                printf("Exiting...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
