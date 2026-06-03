@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int n, i, time, hyperperiod = 20; 
+
+    printf("Enter number of tasks: ");
+    scanf("%d", &n);
+
+    int C[n], D[n], T[n];
+    int remaining[n];
+    int next_arrival[n];
+    int abs_deadline[n];
+
+    
+    for(i = 0; i < n; i++) {
+        printf("Enter Capacity, Deadline, Period for Task %d: ", i + 1);
+        scanf("%d %d %d", &C[i], &D[i], &T[i]);
+
+        remaining[i] = 0;
+        next_arrival[i] = 0;
+        abs_deadline[i] = 0;
+    }
+
+    printf("\n--- EDF Scheduling (Periodic Tasks) ---\n");
+
+    for(time = 0; time < hyperperiod; time++) {
+
+     
+        for(i = 0; i < n; i++) {
+            if(time == next_arrival[i]) {
+                remaining[i] = C[i];
+                abs_deadline[i] = time + D[i];
+                next_arrival[i] += T[i];
+            }
+        }
+
+        int selected = -1;
+        int min_deadline = INT_MAX;
+
+       
+        for(i = 0; i < n; i++) {
+            if(remaining[i] > 0 && abs_deadline[i] < min_deadline) {
+                min_deadline = abs_deadline[i];
+                selected = i;
+            }
+        }
+
+        if(selected == -1) {
+            printf("%d ms : CPU is idle.\n", time);
+        } else {
+            printf("%d ms : Task %d is running.\n", time, selected + 1);
+            remaining[selected]--;
+        }
+    }
+
+    return 0;
+}
