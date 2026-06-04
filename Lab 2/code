@@ -1,4 +1,9 @@
-of processes: ");
+#include <stdio.h>
+int main()
+{
+    int n, i;
+    printf("Enter number of processes: ");
+    scanf("%d", &n)
     scanf("%d",&n);
 
     printf("Enter Arrival Time:\n");
